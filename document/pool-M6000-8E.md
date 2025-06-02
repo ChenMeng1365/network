@@ -1,0 +1,126 @@
+
+# M6000-8E 地址池
+
+```ruby
+@sign << ['M6000-8E', '地址池接口']
+@sign << ['M6000-8E', '地址池配置']
+@sign << ['M6000-8E', '地址池解析']
+@sign << ['M6000-8E', 'nat地址配置']
+@sign << ['M6000-8E', '地址池日志']
+
+module M6000_8E
+  module_function
+
+  def 地址池接口 配置散列
+    虚接口正文,录入 = '',false;虚接口列表,虚接口散列 = [],{}
+    (配置散列['AM'] || 配置散列['am']).each_line do|line|
+      录入 = true if /  interface vbui(.)*/.match(line)
+      虚接口正文 << line if 录入
+      (虚接口列表 << 虚接口正文;虚接口正文,录入 = '',false) if "  \$\n"==line # M6k-8 is /    \$/.match(line)
+    end
+    虚接口列表.delete("")
+    虚接口列表.each{|虚接口|虚接口散列[虚接口.split("\n")[0].split(' ')[1].strip]=虚接口}
+    虚接口散列
+  end
+
+  def 地址池配置 虚接口文本
+    地址池正文,录入 = '',false;地址池列表 = []
+    虚接口文本.each_line do|line|
+      录入 = true if /    ip-pool pool-name(.)*/.match(line)
+      地址池正文 << line if 录入
+      (地址池列表 << 地址池正文;地址池正文,录入 = '',false) if "    \$\n"==line # M6k-8 is /      \$/.match(line)
+    end
+    地址池列表
+  end
+
+  def 地址池解析 配置散列
+    地址池列表,地址池配置,虚接口散列 = [],[],地址池接口(配置散列)
+    虚接口散列.values.each{|虚接口|地址池配置 += 地址池配置(虚接口)}
+    地址池配置.each do|地址池|参数 = {};index = 1
+      地址池.each_line do|line|
+        if line.include?('ip-pool')
+          参数['name'] = line.chop.strip.split(' ')[-3]
+          参数['id']   = line.chop.strip.split(' ')[-1]
+        end
+        if line.include?('access-domain')
+          参数['access-domain'] ||= []
+          参数['access-domain'] << line.chop.strip.split(' ')[-1]
+        end
+        if line.include?('pppoe-dns-server') || line.include?('ipoe-dns-server')
+          参数['dns-server'] ||= []
+          参数['dns-server'] << line.chop.gsub('second','').strip.split(' ')[-1]
+          参数['dns-server'].uniq!
+        end
+        if line.include?('member')
+          index = line.split(' ').last.strip
+        end
+        if line.include?('start-ip') and line.include?('end-ip')
+          参数['member'] ||= []
+          开始ip = line.chop.strip.split(' ')[-3]
+          结束ip = line.chop.strip.split(' ')[-1]
+          参数['member'] << [index,开始ip,结束ip]
+        end
+      end
+      地址池列表 << 参数
+    end
+    地址池列表
+  end
+  
+  def nat地址配置 配置散列
+    地址池列表 = [];参数 = {}
+    (配置散列['CGN'] || 配置散列['cgn'] || "").each_line do|line|
+      if line.include?("node")
+        参数['node'] ||= []
+        a,node_id,board = line.split(" ")
+        参数['node'] << [node_id,board]
+      end
+      参数['tcp-mss-clamping'] = line.split(" ")[-1].strip if line.include?("tcp-mss-clamping")
+      if line.include?("cgn-pool")
+        参数['pool'] ||= {}
+        参数['pool']['name'] = line.split(" ")[1]
+        参数['pool']['id'] = line.split(" ")[3]
+      end
+      参数['pool']['port-range'] = line.split(" ")[-1] if line.include?("port-range")
+      if line.include?("section")
+        参数['pool']['section'] ||= []
+        a,section,stip,edip = line.split(" ")
+        参数['pool']['section'] << [section,stip,edip]
+      end
+      if line.include?("domain")
+        参数['domain name'] = line.split(" ")[1]
+        参数['domain id'] = line.split(" ")[2]
+        参数['domain type'] = line.split(" ")[4..5].join(" ")
+      end
+      参数['tcp-timeout-unwell-known-fin-rst'] = line.split(" ")[-1] if line.include?("unwell-known-port")
+      参数['tcp-timeout-well-known-fin-rst'] = line.split(" ")[-1] if line.include?("well-known-port")
+      if line.include?("dynamic")
+        参数['acl rule'] ||= []
+        参数['acl rule'] << line.strip
+      end
+    end
+    地址池列表 << 参数
+    地址池列表
+  end
+  
+  def 地址池日志 详细信息
+    地址池列表 = [];时间标签 = Time.now.form
+    分片信息 = 详细信息.split("----------------------------------------\n")[1..-1]
+    分片信息.each do|片段|单池 = {"Scan Time"=>时间标签}
+      单池['Pool Id'] = /pool\-id( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip.split(" ")[0]
+      单池['Pool Name'] = /pool\-name( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip#.split(" ")[0]
+      单池['Description'] = /description( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip#.split(" ")[0]
+      单池['Domain Name'] = /domain\-name( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip#.split(" ")[0]
+      其他域名 = 片段.split("\n").select{|line|line.split(" ").size==1 and !line.include?("#") and !line.include?("^")}
+      单池['Domain Name'] = ( [单池['Domain Name']] + 其他域名.select{|l|!l.include?("[TelnetMajin]")}.map{|line|line.strip} ).join(";")
+      单池['Vpn Id'] = /vpn\-id( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip.split(" ")[0]
+      单池['Vbui Name'] = /vbui\-name( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip#.split(" ")[0]
+      单池['Address Total'] = /address\-total( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip.split(" ")[0]
+      单池['Unusable Rate'] = /unusable\-rate( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip#.split(" ")[0]
+      单池['Used Rate'] = /used\-rate( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip.split(" ")[0]
+      单池['Free Rate'] = /free\-rate( )*:(.+)/.match(片段).to_s.split(":")[1].to_s.strip#.split(" ")[0]
+      地址池列表 << 单池
+    end
+    地址池列表
+  end
+end
+```
