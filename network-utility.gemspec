@@ -3,14 +3,14 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "network-utility"
-  spec.version       = '1.1.5'
+  spec.version       = '1.1.5b'
   spec.authors       = ["Matt"]
   spec.email         = ["matthrewchains@gmail.com","18995691365@189.cn"]
   spec.license       = "AGPL-3.0"
 
   spec.summary       = %q{core}
   spec.description   = %q{network-core}
-  spec.homepage      = %q{http://127.0.0.1}
+  spec.homepage      = %q{https://github.com/ChenMeng1365/network}
   spec.files         = [
     'utility/ipv4_address',
     'utility/ipv6_address',
@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   # spec.bindir        = ""
   # spec.executables   = [""]
   spec.require_paths = ["."]
-  spec.add_runtime_dependency 'cc',  "~> 1.0", '>= 1.0.0'
-  spec.add_runtime_dependency 'casetdown', "~> 0.8", '>= 0.8.0'
+  spec.add_runtime_dependency 'cc',  "~> 1.0.0"
+  spec.add_runtime_dependency 'casetdown', "~> 0.8.0"
 end
