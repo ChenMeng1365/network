@@ -1,6 +1,4 @@
 #coding:utf-8
-require  'cc'
-CC.use 'kernel', 'file', 'chrono'
 
 [
   'ipv4_address',
@@ -20,5 +18,5 @@ CC.use 'kernel', 'file', 'chrono'
 ].each{|mod|require mod}
 
 module Network
-  VERSION = '1.1.4'
+  VERSION = '1.1.5'
 end

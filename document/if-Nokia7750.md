@@ -3,7 +3,7 @@
 
 ```ruby
 @sign << ['Nokia7750', '接口配置', 'PENDING']
-@sign << ['Nokia7750', '接口分检', 'PENDING']
+@sign << ['Nokia7750', '接口分捡', 'PENDING']
 @sign << ['Nokia7750', '端口识别', 'PEN`DING']
 @sign << ['Nokia7750', '接口地址', 'PENDING']
 @sign << ['Nokia7750', '接口描述', 'PENDING']
@@ -19,7 +19,7 @@ module Nokia7750
         []
     end
 
-    def 接口分检 接口集合
+    def 接口分捡 接口集合
         []
     end
 

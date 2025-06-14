@@ -526,14 +526,14 @@ module ZXCTN9000_18EA
   # func: 根据一个端口的描述信息，给出其格式化的类型、连接符、端口编号
   def 端口识别 描述
     描述 = 描述[0] if 描述.instance_of?(Array) # M6000取接口配置中名称部分 [name,<tag>...</tag>,...]
-    type = /xgei|gei|smartgroup|loopback|extimer|vbui|null|guvi|gcvi|mgmt_eth|vei|spi|flexe_client|flexe_group|ptp|gps|qx_eth|qx|bvi|pw|subvlan/.match(描述)
+    type = /xgei|gei|ulei|smartgroup|loopback|extimer|vbui|null|guvi|gcvi|mgmt_eth|vei|spi|flexe_client|flexe_group|ptp|gps|qx_eth|qx|bvi|pw|subvlan/.match(描述)
     类型 = type ? type.to_s : '未知类型'
     port = /(\d+|\/|\.)*(\d+)/.match(描述.split(类型).join)
     端口 = port ? port.to_s : '未知端口'
     端口 = '' if 类型=='mgmt_eth'
     连接符 = if ['smartgroup','loopback','vbui','null','mgmt_eth','vei','flexe_client','flexe_group','qx','bvi','pw','subvlan'].include?(类型)
       '' 
-    elsif ['xgei','gei','extimer','guvi','gcvi','spi','ptp','gps','qx_eth'].include?(类型)
+    elsif ['xgei','gei','ulei','extimer','guvi','gcvi','spi','ptp','gps','qx_eth'].include?(类型)
       '-'
     end
     return 类型,连接符,端口

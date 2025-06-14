@@ -3,7 +3,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "network-utility"
-  spec.version       = '1.1.4'
+  spec.version       = '1.1.5'
   spec.authors       = ["Matt"]
   spec.email         = ["matthrewchains@gmail.com","18995691365@189.cn"]
   spec.license       = "AGPL-3.0"
@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
     'document/document',
 
     'network'
-  ].map{|file|"#{file}.rb"} + Dir["document/**/*"] + ["README.md"]
+  ].map{|file|"#{file}.rb"} + Dir["document/**/*"] + ["README.md", "LICENSE", "GEMFILE"]
 
   # spec.bindir        = ""
   # spec.executables   = [""]
