@@ -46,7 +46,7 @@ end
 module C7609
   def setting
     @selectors = {" --More--"=>' '}
-    @erasers << " --More--" << " " << ""
+    @erasers << " --More--" << "\x08 \x08" << "\x08"
   end
 end
 ```
@@ -59,7 +59,7 @@ end
 module CRS_16
   def setting
     @selectors = {" --More--"=>' '}
-    @erasers << " --More--" << " " << ""
+    @erasers << " --More--" << "\x08 \x08" << "\x08"
   end
 end
 ```
@@ -239,7 +239,7 @@ end
 module M6000_8
   def setting
     @selectors = {" --More--"=>' ',"!</if-intf>"=>'%ruby sleep 1'}
-    @erasers << " --More--" << " "
+    @erasers << " --More--" << "\x08 \x08"
   end
 end
 ```
@@ -250,7 +250,7 @@ end
 module M6000_8E
   def setting
     @selectors = {" --More--"=>' ',"!</if-intf>"=>'%ruby sleep 1'}
-    @erasers << " --More--" << " "
+    @erasers << " --More--" << "\x08 \x08"
   end
 end
 ```
@@ -261,7 +261,7 @@ end
 module M6000_16E
   def setting
     @selectors = {" --More--"=>' ',"!</if-intf>"=>'%ruby sleep 1'}
-    @erasers << " --More--" << " "
+    @erasers << " --More--" << "\x08 \x08"
   end
 end
 ```
@@ -276,7 +276,7 @@ module M6000_18S
       "!</if-intf>"=>'%ruby sleep 1', # HCBSJ
       "$\n$"=>'%ruby sleep 1', # HCBSJ
     }
-    @erasers << " --More--" << " "
+    @erasers << " --More--" << "\x08 \x08"
   end
 end
 ```
@@ -291,7 +291,7 @@ module T8000_18
       "!</if-intf>"=>'%ruby sleep 1', # HCBSJ
       "$\n$"=>'%ruby sleep 1', # HCBSJ
     }
-    @erasers << " --More--" << " "
+    @erasers << " --More--" << "\x08 \x08"
   end
 end
 ```

@@ -3,7 +3,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "network-utility"
-  spec.version       = '1.1.5b'
+  spec.version       = '1.1.5c'
   spec.authors       = ["Matt"]
   spec.email         = ["matthrewchains@gmail.com","18995691365@189.cn"]
   spec.license       = "AGPL-3.0"
@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   # spec.bindir        = ""
   # spec.executables   = [""]
   spec.require_paths = ["."]
-  spec.add_runtime_dependency 'cc',  "~> 1.0.0"
-  spec.add_runtime_dependency 'casetdown', "~> 0.8.0"
+  spec.add_runtime_dependency 'cc',  "~> 1.1.1"
+  spec.add_runtime_dependency 'casetdown', "~> 0.9.0"
 end
