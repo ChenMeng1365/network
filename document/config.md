@@ -675,7 +675,7 @@ module M6000
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -717,7 +717,7 @@ module M6000_8
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -758,7 +758,7 @@ module M6000_8E
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -800,7 +800,7 @@ module M6000_16E
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -841,7 +841,7 @@ module M6000_18S
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -883,7 +883,7 @@ module T8000_18
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -925,7 +925,7 @@ module ZXCTN9000_8EA
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -967,7 +967,7 @@ module ZXCTN9000_18EA
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
@@ -1009,7 +1009,7 @@ module V6000
     new_raw = []
     raw.split("\n").each do|line|
       if line.include?('<') && line.include?('>') && line[0..1]!='!<'
-        new_raw << line.gsub('<','&lt;').gsub('>','&gt;')
+        new_raw << line.gsub('<',"\&lt\;").gsub('>',"\&gt\;")
       else
         new_raw << line
       end
