@@ -1049,11 +1049,11 @@ module CR16010H_F
     module_function
 
     def 配置解析 braw,*guards
-        raw = braw
+        raw = braw.gsub("\r","")
         begin
             raw.split("\n")
         rescue
-            raw = braw.force_encoding('GBK').encode('UTF-8')
+            raw = braw.force_encoding('GBK').encode('UTF-8').gsub("\r","")
         end
         cfg = {}
         hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -1086,11 +1086,11 @@ module CR16018_F
     module_function
 
     def 配置解析 braw,*guards
-        raw = braw
+        raw = braw.gsub("\r","")
         begin
             raw.split("\n")
         rescue
-            raw = braw.force_encoding('GBK').encode('UTF-8')
+            raw = braw.force_encoding('GBK').encode('UTF-8').gsub("\r","")
         end
         cfg = {}
         hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -1123,11 +1123,11 @@ module CR19000_20
     module_function
 
     def 配置解析 braw,*guards
-        raw = braw
+        raw = braw.gsub("\r","")
         begin
             raw.split("\n")
         rescue
-            raw = braw.force_encoding('GBK').encode('UTF-8')
+            raw = braw.force_encoding('GBK').encode('UTF-8').gsub("\r","")
         end
         cfg = {}
         hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
