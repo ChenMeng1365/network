@@ -68,7 +68,7 @@ module NE40E_X16A
   # func: 根据一个端口的描述信息，给出其格式化的类型、连接符、端口编号
   def 端口识别 描述
     连接符 = ''
-    type = /100GE|GE|GigabitEthernet|Pos|Ethernet|Eth\-Trunk|Vlanif|Virtual\-Template|NULL|LoopBack|Aux/.match(描述)
+    type = /100GE|GE|GigabitEthernet|Global\-VE|Pos|Ethernet|Eth\-Trunk|Ip-Trunk|ServiceIf|Tunnel|Vlanif|Virtual\-Template|NULL|LoopBack|Logic\-Channel|Aux/.match(描述)
     类型 = type ? type.to_s : '未知类型'
     port = /(\d+|\/|\.)*(\d+)/.match(描述.split(类型).join)
     端口 = port ? port.to_s : '未知端口'
