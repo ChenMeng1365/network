@@ -688,15 +688,14 @@ module M6000
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
     # prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
     # return cfg unless prepart
-    newraw = []; flag = false
+    newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
-      if line.size==80
+      if flag && line[0..1]!='!<'
+        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+      else
         newraw << line
-        flag = true
-      elsif flag
-        newraw[-1] = newraw[-1] + " " +line
-        flag = line.size==80
       end
+      flag = line.size==80
     end
     raw = newraw.join("\n")
     content = self.preprocess(raw)#prepart.split(/#{hostname}#( )*\n/)[0]
@@ -738,15 +737,14 @@ module M6000_8
 
   def 配置解析 raw,*guards
     cfg = {}
-    newraw = []; flag = false
+    newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
-      if line.size==80
+      if flag && line[0..1]!='!<'
+        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+      else
         newraw << line
-        flag = true
-      elsif flag
-        newraw[-1] = newraw[-1] + " " +line
-        flag = line.size==80
       end
+      flag = line.size==80
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
@@ -790,15 +788,14 @@ module M6000_8E
 
   def 配置解析 raw,*guards
     cfg = {}
-    newraw = []; flag = false
+    newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
-      if line.size==80
+      if flag && line[0..1]!='!<'
+        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+      else
         newraw << line
-        flag = true
-      elsif flag
-        newraw[-1] = newraw[-1] + " " +line
-        flag = line.size==80
       end
+      flag = line.size==80
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
@@ -843,15 +840,14 @@ module M6000_16E
 
   def 配置解析 raw,*guards
     cfg = {}
-    newraw = []; flag = false
+    newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
-      if line.size==80
+      if flag && line[0..1]!='!<'
+        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+      else
         newraw << line
-        flag = true
-      elsif flag
-        newraw[-1] = newraw[-1] + " " +line
-        flag = line.size==80
       end
+      flag = line.size==80
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
@@ -895,15 +891,14 @@ module M6000_18S
 
   def 配置解析 raw,*guards
     cfg = {}
-    newraw = []; flag = false
+    newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
-      if line.size==80
+      if flag && line[0..1]!='!<'
+        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+      else
         newraw << line
-        flag = true
-      elsif flag
-        newraw[-1] = newraw[-1] + " " +line
-        flag = line.size==80
       end
+      flag = line.size==80
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
