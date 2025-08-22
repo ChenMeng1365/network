@@ -683,6 +683,14 @@ module M6000
     return new_raw.join("\n")
   end
 
+  def connect preline, postline
+    connect = ' '
+    connect = '' if preline.include?('ip-host')
+    connect = '' if /[\d+|\.|\-|\_]$/.match(preline)
+    connect = '' if /^[\d+|\.|\-|\_]/.match(postline)
+    return connect
+  end
+
   def 配置解析 raw,*guards
     cfg = {}
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
@@ -691,7 +699,7 @@ module M6000
     newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
       if flag && line[0..1]!='!<'
-        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+        newraw[-1] = newraw[-1] + connect(newraw[-1],line) +line
       else
         newraw << line
       end
@@ -735,12 +743,20 @@ module M6000_8
     return new_raw.join("\n")
   end
 
+  def connect preline, postline
+    connect = ' '
+    connect = '' if preline.include?('ip-host')
+    connect = '' if /[\d+|\.|\-|\_]$/.match(preline)
+    connect = '' if /^[\d+|\.|\-|\_]/.match(postline)
+    return connect
+  end
+
   def 配置解析 raw,*guards
     cfg = {}
     newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
       if flag && line[0..1]!='!<'
-        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+        newraw[-1] = newraw[-1] + connect(newraw[-1],line) +line
       else
         newraw << line
       end
@@ -786,12 +802,20 @@ module M6000_8E
     return new_raw.join("\n")
   end
 
+  def connect preline, postline
+    connect = ' '
+    connect = '' if preline.include?('ip-host')
+    connect = '' if /[\d+|\.|\-|\_]$/.match(preline)
+    connect = '' if /^[\d+|\.|\-|\_]/.match(postline)
+    return connect
+  end
+
   def 配置解析 raw,*guards
     cfg = {}
     newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
       if flag && line[0..1]!='!<'
-        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+        newraw[-1] = newraw[-1] + connect(newraw[-1],line) +line
       else
         newraw << line
       end
@@ -838,12 +862,20 @@ module M6000_16E
     return new_raw.join("\n")
   end
 
+  def connect preline, postline
+    connect = ' '
+    connect = '' if preline.include?('ip-host')
+    connect = '' if /[\d+|\.|\-|\_]$/.match(preline)
+    connect = '' if /^[\d+|\.|\-|\_]/.match(postline)
+    return connect
+  end
+
   def 配置解析 raw,*guards
     cfg = {}
     newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
       if flag && line[0..1]!='!<'
-        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+        newraw[-1] = newraw[-1] + connect(newraw[-1],line) +line
       else
         newraw << line
       end
@@ -889,12 +921,20 @@ module M6000_18S
     return new_raw.join("\n")
   end
 
+  def connect preline, postline
+    connect = ' '
+    connect = '' if preline.include?('ip-host')
+    connect = '' if /[\d+|\.|\-|\_]$/.match(preline)
+    connect = '' if /^[\d+|\.|\-|\_]/.match(postline)
+    return connect
+  end
+
   def 配置解析 raw,*guards
     cfg = {}
     newraw = [""]; flag = false
     raw.split("\n").each_with_index do|line,index|
       if flag && line[0..1]!='!<'
-        newraw[-1] = newraw[-1] + (newraw[-1].include?('ip-host') ? "" : ' ') +line
+        newraw[-1] = newraw[-1] + connect(newraw[-1],line) + line
       else
         newraw << line
       end
