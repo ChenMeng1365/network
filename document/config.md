@@ -110,7 +110,11 @@ module CX600_X8A
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -145,7 +149,11 @@ module CX600_X16A
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -180,7 +188,11 @@ module MA5200G_8
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -274,7 +286,11 @@ module ME60_16
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -311,7 +327,11 @@ module ME60_X16
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -348,7 +368,11 @@ module NE40E_X8
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -383,7 +407,11 @@ module NE40E_X16
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -420,7 +448,11 @@ module NE40E_X16A
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -456,7 +488,11 @@ module NE5000E_X16
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -492,7 +528,11 @@ module NE5000E_X16A
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -527,7 +567,11 @@ module NE5000E_20
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -567,7 +611,11 @@ module NE8000E_X8
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -602,7 +650,11 @@ module NE8100_X8
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
@@ -638,7 +690,11 @@ module VNE9000
     begin
       raw.split("\n")
     rescue
-      raw = braw.force_encoding('GBK').encode('UTF-8')
+      begin
+        raw = braw.force_encoding('GBK').encode('UTF-8')
+      rescue
+        raw = braw.force_encoding('ASCII-8BIT')
+      end
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
