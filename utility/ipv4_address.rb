@@ -82,14 +82,41 @@ class IPv4
   
   def + num
     @number += num
-    generate("0b"+("%032b"%@number).unpack("a8a8a8a8").join("."))
+    generate("0b"+("%032b" % @number).unpack("a8a8a8a8").join("."))
   end
   
   def - num
     @number -= num
-    generate("0b"+("%032b"%@number).unpack("a8a8a8a8").join("."))
+    generate("0b"+("%032b" % @number).unpack("a8a8a8a8").join("."))
+  end
+
+  def & another
+    target = nil
+    target = another if another.is_a?(IPv4)
+    target = IPv4Mask.number(another) if another.is_a?(Integer)
+    return self unless target
+    newaddr = []
+    self.numbers.each_with_index do|number, index|
+      newaddr << (number & target.numbers[index])
+    end
+    return IP.v4(newaddr.join('.'))
   end
   
+  def delegation base_pref, sub_pref
+    base_len = base_pref.is_a?(IPv4) ? base_pref.mask_counter : base_pref.is_a?(Integer) ? base_pref : nil
+    sub_len  = sub_pref.is_a?(IPv4)  ? sub_pref.mask_counter  : sub_pref.is_a?(Integer)  ? sub_pref  : nil
+    return [] unless base_len && sub_len
+    return [] unless base_len < sub_len
+    return [] unless base_len <= 32 && sub_len <= 32
+    base = self & base_len
+    pref = IPv4Mask.number sub_len
+    return (0..(2**(sub_len - base_len)-1)).to_a.map do|i|
+      new_subnet = base.clone
+      new_subnet + (i << (32-sub_len))
+      [new_subnet, pref]
+    end
+  end
+
   def is_class_a?
     first =IPv4.new('10.0.0.0').number
     last = IPv4.new('126.255.255.255').number

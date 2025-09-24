@@ -61,14 +61,42 @@ class IPv6
 
   def + num
     @number += num
-    generate(("%032x"%@number).unpack("a4a4a4a4a4a4a4a4").join(":"))
+    generate(("%032x" % @number).unpack("a4a4a4a4a4a4a4a4").join(":"))
   end
   
   def - num
     @number -= num
-    generate(("%032x"%@number).unpack("a4a4a4a4a4a4a4a4").join(":"))
+    generate(("%032x" % @number).unpack("a4a4a4a4a4a4a4a4").join(":"))
+  end
+
+  def & another
+    target = nil
+    target = another if another.is_a?(IPv6)
+    target = IPv6Mask.number(another) if another.is_a?(Integer)
+    return self unless target
+    newaddr = []
+    self.numbers.each_with_index do|number, index|
+      newaddr << "%04x"%(number & target.numbers[index])
+    end
+    result = IP.v6(newaddr.join(':'))
+    return result
   end
   
+  def delegation base_pref, sub_pref
+    base_len = base_pref.is_a?(IPv6) ? base_pref.mask_counter : base_pref.is_a?(Integer) ? base_pref : nil
+    sub_len  = sub_pref.is_a?(IPv6)  ? sub_pref.mask_counter  : sub_pref.is_a?(Integer)  ? sub_pref  : nil
+    return [] unless base_len && sub_len
+    return [] unless base_len < sub_len
+    return [] unless base_len <= 128 && sub_len <= 128
+    base = self & base_len
+    pref = IPv6Mask.number sub_len
+    return (0..(2**(sub_len - base_len)-1)).to_a.map do|i|
+      new_subnet = base.clone
+      new_subnet + (i << (128-sub_len))
+      [new_subnet, pref]
+    end
+  end
+
   #### mask ####
   def mask_counter
     if is_mask?
