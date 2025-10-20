@@ -3,7 +3,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "network-utility"
-  spec.version       = '1.1.23'
+  spec.version       = '1.1.24'
   spec.authors       = ["Matt"]
   spec.email         = ["matthrewchains@gmail.com","18995691365@189.cn"]
   spec.license       = "AGPL-3.0"
@@ -18,6 +18,8 @@ Gem::Specification.new do |spec|
     'utility/netmerge',
     'utility/route',
     'utility/whitelist',
+
+    'support/snmp',
 
     'document/document',
 

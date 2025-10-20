@@ -10,6 +10,10 @@
 ].each{|mod|require "utility/#{mod}"}
 
 [
+  'snmp'
+].each{|mod|require "support/#{mod}"}
+
+[
   'document'
 ].each{|mod|require "document/#{mod}"}
 
@@ -18,5 +22,5 @@
 ].each{|mod|require mod}
 
 module Network
-  VERSION = '1.1.23'
+  VERSION = '1.1.24'
 end
