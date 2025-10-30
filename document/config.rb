@@ -1,85 +1,71 @@
-
-# 配置文档解析
-
-## Alcatel
-
-```ruby
 @sign << ['ALCATEL7750', '配置解析']
 
 module ALCATEL7750
-	module_function
+    module_function
 
-	def 配置解析 raw
-		conf = {}; name = nil; temp = []
-		raw.split("\n").each do|line|
-			if line[0..4]=='echo '
-				conf[name] = temp
-				temp = []
-				name = line.split('"')[1]
-				conf[name] = ''
-			elsif line.include?('#--------------------------------------------------')
-				next
-			else
-				temp << line
-			end 
-		end
-		conf[name] = temp
-		conf.delete(nil)
-		return conf
-	end
+    def 配置解析 raw
+        conf = {}; name = nil; temp = []
+        raw.split("\n").each do|line|
+            if line[0..4]=='echo '
+                conf[name] = temp
+                temp = []
+                name = line.split('"')[1]
+                conf[name] = ''
+            elsif line.include?('#--------------------------------------------------')
+                next
+            else
+                temp << line
+            end
+        end
+        conf[name] = temp
+        conf.delete(nil)
+        return conf
+    end
 end
-```
 
-```ruby
 @sign << ['Nokia7750', '配置解析']
 
 module Nokia7750
-	module_function
+    module_function
 
-	def 配置解析 raw
-		conf = {}; name = nil; temp = []
-		raw.split("\n").each do|line|
-			if line[0..4]=='echo '
-				conf[name] = temp
-				temp = []
-				name = line.split('"')[1]
-				conf[name] = ''
-			elsif line.include?('#--------------------------------------------------')
-				next
-			else
-				temp << line
-			end 
-		end
-		conf[name] = temp
-		conf.delete(nil)
-		return conf
-	end
+    def 配置解析 raw
+        conf = {}; name = nil; temp = []
+        raw.split("\n").each do|line|
+            if line[0..4]=='echo '
+                conf[name] = temp
+                temp = []
+                name = line.split('"')[1]
+                conf[name] = ''
+            elsif line.include?('#--------------------------------------------------')
+                next
+            else
+                temp << line
+            end
+        end
+        conf[name] = temp
+        conf.delete(nil)
+        return conf
+    end
 end
-```
 
-## 思科
-
-```ruby
 @sign << ['C7609', '配置解析']
 
 module C7609
-	module_function
+    module_function
 
-	def 配置解析 raw
-		conf = {}; name = nil; temp = []
-		return conf
-	end
+    def 配置解析 raw
+        conf = {}; name = nil; temp = []
+        return conf
+    end
 end
-```
 
-```ruby
 @sign << ['CRS-16', '配置解析']
 
 module CRS_16
-	module_function
+    module_function
 
-	def 配置解析 raw, *guards
-		config = {}
+    def 配置解析 raw, *guards
+        config = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
     prepart = raw.split("show running-config")[1]
     return {} unless prepart
@@ -92,18 +78,14 @@ module CRS_16
       (config[tag] ||= []) << piece
     end
     return config
-	end
+    end
 end
-```
 
-## 华为
-
-```ruby
 @sign << ['CX600-X8A', '配置解析']
 @sign << ['CX600-X8A', '主机名']
 
 module CX600_X8A
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -135,14 +117,12 @@ module CX600_X8A
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['CX600-X16A', '配置解析']
 @sign << ['CX600-X16A', '主机名']
 
 module CX600_X16A
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -174,14 +154,12 @@ module CX600_X16A
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['MA5200G-8', '配置解析']
 @sign << ['MA5200G-8', '主机名 ']
 
 module MA5200G_8
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -213,14 +191,12 @@ module MA5200G_8
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['NE40E', '配置解析']
 @sign << ['NE40E', '主机名 ']
 
 module NE40E
-	module_function
+    module_function
 
   def 配置解析 raw,*guards
     cfg = {}
@@ -242,14 +218,12 @@ module NE40E
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['NE80E', '配置解析']
 @sign << ['NE80E', '主机名 ']
 
 module NE80E
-	module_function
+    module_function
 
   def 配置解析 raw,*guards
     cfg = {}
@@ -272,14 +246,12 @@ module NE80E
   end
 
 end
-```
 
-```ruby
 @sign << ['ME60-16', '配置解析']
 @sign << ['ME60-16', '主机名 ']
 
 module ME60_16
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -313,14 +285,12 @@ module ME60_16
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['ME60-X16', '配置解析']
 @sign << ['ME60-X16', '主机名 ']
 
 module ME60_X16
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -354,14 +324,12 @@ module ME60_X16
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['NE40E-X8', '配置解析']
 @sign << ['NE40E-X8', '主机名 ']
 
 module NE40E_X8
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -393,14 +361,12 @@ module NE40E_X8
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['NE40E-X16', '配置解析']
 @sign << ['NE40E-X16', '主机名 ']
 
 module NE40E_X16
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -434,14 +400,12 @@ module NE40E_X16
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['NE40E-X16A', '配置解析']
 @sign << ['NE40E-X16A', '主机名 ']
 
 module NE40E_X16A
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -474,14 +438,12 @@ module NE40E_X16A
   end
 
 end
-```
 
-```ruby
 @sign << ['NE5000E-X16', '配置解析']
 @sign << ['NE5000E-X16', '主机名 ']
 
 module NE5000E_X16
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -514,14 +476,12 @@ module NE5000E_X16
   end
 
 end
-```
 
-```ruby
 @sign << ['NE5000E-X16A', '配置解析']
 @sign << ['NE5000E-X16A', '主机名 ']
 
 module NE5000E_X16A
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -553,14 +513,12 @@ module NE5000E_X16A
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['NE5000E-20', '配置解析']
 @sign << ['NE5000E-20', '主机名 ']
 
 module NE5000E_20
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -597,14 +555,12 @@ module NE5000E_20
   end
 
 end
-```
 
-```ruby
 @sign << ['NE8000E-X8', '配置解析']
 @sign << ['NE8000E-X8', '主机名 ']
 
 module NE8000E_X8
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -636,14 +592,12 @@ module NE8000E_X8
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['NE8100-X8', '配置解析']
 @sign << ['NE8100-X8', '主机名 ']
 
 module NE8100_X8
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -676,14 +630,12 @@ module NE8100_X8
   end
 
 end
-```
 
-```ruby
 @sign << ['VNE9000', '配置解析']
 @sign << ['VNE9000', '主机名 ']
 
 module VNE9000
-	module_function
+    module_function
 
   def 配置解析 braw,*guards
     raw = braw
@@ -715,16 +667,12 @@ module VNE9000
     config['sysname'].first.to_s.split(' ')[1]
   end
 end
-```
 
-## 中兴
-
-```ruby
 @sign << ['M6000', '配置解析']
 @sign << ['M6000', '主机名']
 
 module M6000
-	module_function
+    module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -777,14 +725,12 @@ module M6000
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['M6000-8', '配置解析']
 @sign << ['M6000-8', '主机名']
 
 module M6000_8
-	module_function
+    module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -836,14 +782,12 @@ module M6000_8
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['M6000-8E', '配置解析']
 @sign << ['M6000-8E', '主机名']
 
 module M6000_8E
-	module_function
+    module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -896,14 +840,12 @@ module M6000_8E
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['M6000-16E', '配置解析']
 @sign << ['M6000-16E', '主机名']
 
 module M6000_16E
-	module_function
+    module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -955,14 +897,12 @@ module M6000_16E
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['M6000-18S', '配置解析']
 @sign << ['M6000-18S', '主机名']
 
 module M6000_18S
-	module_function
+    module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -1015,14 +955,12 @@ module M6000_18S
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['T8000-18', '配置解析']
 @sign << ['T8000-18', '主机名 ']
 
 module T8000_18
-	module_function
+    module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -1075,14 +1013,12 @@ module T8000_18
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['ZXCTN9000-8EA', '配置解析']
 @sign << ['ZXCTN9000-8EA', '主机名 ']
 
 module ZXCTN9000_8EA
-	module_function
+    module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -1135,14 +1071,12 @@ module ZXCTN9000_8EA
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['ZXCTN9000-18EA', '配置解析']
 @sign << ['ZXCTN9000-18EA', '主机名 ']
 
 module ZXCTN9000_18EA
-	module_function
+  module_function
 
   # Fix a special bug when naming as a tag
   def preprocess raw
@@ -1195,9 +1129,7 @@ module ZXCTN9000_18EA
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-```ruby
 @sign << ['V6000', '配置解析']
 @sign << ['V6000', '主机名 ']
 
@@ -1255,11 +1187,7 @@ module V6000
     config['system-config'].to_s.split("\n")[0].split(' ')[1]
   end
 end
-```
 
-## 华三
-
-```ruby
 @sign << ['CR16010H-F', '配置解析']
 @sign << ['CR16010H-F', '主机名']
 
@@ -1294,9 +1222,7 @@ module CR16010H_F
         config['sysname'].first.to_s.split(' ')[1]
     end
 end
-```
 
-```ruby
 @sign << ['CR16018-F', '配置解析']
 @sign << ['CR16018-F', '主机名']
 
@@ -1331,9 +1257,7 @@ module CR16018_F
         config['sysname'].first.to_s.split(' ')[1]
     end
 end
-```
 
-```ruby
 @sign << ['CR19000-20', '配置解析']
 @sign << ['CR19000-20', '主机名']
 
@@ -1368,4 +1292,3 @@ module CR19000_20
         config['sysname'].first.to_s.split(' ')[1]
     end
 end
-```
