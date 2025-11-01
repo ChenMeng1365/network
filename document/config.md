@@ -999,6 +999,7 @@ module M6000_18S
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
     prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
+    prepart = self.preprocess(raw).split("show running-config\n")[1].split("<<<<")[0] unless prepart # ssh >>>> 
     return cfg unless prepart
     content = prepart.split(/#{hostname}#( )*\n/)[0]
 

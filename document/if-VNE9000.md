@@ -315,6 +315,7 @@ module VNE9000
       
       子接口名称 = self.端口识别(接口配置)
       bas子接口数据库[name] ||= {}
+      子接口索引 = []
       if 子接口名称[0].include?("GigabitEthernet") or 子接口名称[0].include?("50GE") or 子接口名称[0].include?("50|100GE") or 子接口名称[0].include?("100GE")
         # 子接口索引 = ["eth--"+子接口名称[-1].split(".")[0].split('/')[-3..-1].join(',')] # AIBOS风格
         子接口索引 = [子接口名称.join.split(".")[0]] # 原生风格

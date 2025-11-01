@@ -67,7 +67,7 @@ module CX600_X16A
   # func: 根据一个端口的描述信息，给出其格式化的类型、连接符、端口编号
   def 端口识别 描述
     连接符 = ''
-    type = /GE|50\|100GE|50GE|100GE|GigabitEthernet|Pos|Ethernet|Eth\-Trunk|Global\-VE|FlexE\-100G|FlexE\-50\|100G|FlexE|Vlanif|Virtual\-Template|NULL|LoopBack|Aux/.match(描述)
+    type = /GE|50\|100GE|50GE|100GE|GigabitEthernet|Pos|Ethernet|Eth\-Trunk|Global\-VE|FlexE\-100G|FlexE\-50\|100G|FlexE|Vlanif|Virtual\-Template|NULL|LoopBack|Logic\-Channel|Aux/.match(描述)
     类型 = type ? type.to_s : '未知类型'
     port = /(\d+|\/|\.)*(\d+)/.match(描述.split(类型).join)
     端口 = port ? port.to_s : '未知端口'
@@ -241,6 +241,13 @@ module CX600_X16A
     return nil
   end
 
+  # func: 给出聚合接口查询命令的返回结果，提取接口对应的物理接口，若无返回空
+  def 聚合接口查询 查询报文
+    return [] if 查询报文.include?("not exist")
+    parts = 查询报文.split("--------------------------------------------------------------------------------")
+    return parts[1].split("\n").map{|s|s.split(" ")}.select{|s|s.size>7}.map{|s|s.first.split('(').first}.select{|s|!s.include?('Actor')}
+  end
+
   #####################################################################################################
   # 接口VLAN相关
   # 对接口vlan配置的解析
@@ -307,6 +314,7 @@ module CX600_X16A
       
       子接口名称 = self.端口识别(接口配置)
       bas子接口数据库[name] ||= {}
+      子接口索引 = []
       if 子接口名称[0].include?("GigabitEthernet") or 子接口名称[0].include?("50GE") or 子接口名称[0].include?("50|100GE") or 子接口名称[0].include?("100GE")
         # 子接口索引 = ["eth--"+子接口名称[-1].split(".")[0].split('/')[-3..-1].join(',')] # AIBOS风格
         子接口索引 = [子接口名称.join.split(".")[0]] # 原生风格
