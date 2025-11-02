@@ -7,8 +7,11 @@
 @sign << ["ZXCTN9000-8EA", "接口基本信息"]
 @sign << ["ZXCTN9000-8EA", "接口vlan信息"]
 @sign << ["ZXCTN9000-8EA", "接口acl信息"]
+@sign << ["ZXCTN9000-8EA", "接口urpf信息"]
 @sign << ["ZXCTN9000-8EA", "接口mpls信息"]
 @sign << ["ZXCTN9000-8EA", "接口lacp信息"]
+@sign << ["ZXCTN9000-8EA", "接口am信息"]
+@sign << ["ZXCTN9000-8EA", "接口uim信息"]
 @sign << ["ZXCTN9000-8EA", "接口isis信息"]
 @sign << ["ZXCTN9000-8EA", "接口multicast信息"]
 @sign << ["ZXCTN9000-8EA", "接口firload信息"]
@@ -49,8 +52,20 @@ module ZXCTN9000_8EA
   #####################################################################################################
   # 接口/端口配置的基本查询
   # 接口集合 => 接口分检 => 物理接口集合,子接口集合,特殊接口集合
-
-  # 主动模块:
+  # 1. 接口物理信息
+  # 2. 接口基本信息
+  # 3. 接口vlan信息
+  # 4. 接口acl信息
+  # 5. 接口urpf信息
+  # 6. 接口mpls信息
+  # 7. 接口lacp信息
+  # 8. 接口am信息
+  # 9. 接口uim信息
+  # 10.接口isis信息
+  # 11.接口multicast信息
+  #
+  # 新城更新模块：
+  # 1. 主动模块:
   # firload
   # port-request-info
   # if-intf
@@ -68,8 +83,8 @@ module ZXCTN9000_8EA
   # ospfv2
   # ospfv3
   # qos # 未实现
-
-  # 被动模块:(暂不关联)
+  # 
+  # 2. 被动模块:(暂不关联)
   # samgr
   # monitor
   # alarm
@@ -84,7 +99,7 @@ module ZXCTN9000_8EA
      self.接口mpls信息(正文), self.接口isis信息(正文), self.接口multicast信息(正文), self.接口lacp信息(正文),
      self.接口firload信息(正文), self.接口port_request_info信息(正文), self.接口ospf信息(正文),
      self.接口arp信息(正文), self.接口nd信息(正文), self.接口interface_performance信息(正文), 
-    #  self.接口urpf信息(正文), self.接口am信息(正文), self.接口uim信息(正文),
+     self.接口urpf信息(正文), self.接口am信息(正文), self.接口uim信息(正文),
     ].each do|infolist|
       infolist.each do|intf,text|
         接口表[intf]||=[]
@@ -155,7 +170,22 @@ module ZXCTN9000_8EA
     end
     接口acl表
   end
-  
+
+  def 接口urpf信息 正文
+    tag = 正文["URPF"] ? "URPF" : "urpf"
+    接口urpf表 = {}
+    if tag == "URPF"
+      (正文[tag]||"").split("\n!")\
+            .collect{|l|"<#{tag}>\n"+l.strip+"\n!\n</#{tag}>" if l!="\n!"}\
+            .compact.each{|接口|接口urpf表[/interface (.)*/.match(接口)[0].to_s.strip]=接口}
+    elsif tag == "urpf"
+      (正文[tag]||"").split("\n$")\
+            .collect{|l|"<#{tag}>\n"+l.strip+"\n!\n</#{tag}>" if l!="\n!"}\
+            .compact.each{|接口|接口urpf表[/interface (.)*/.match(接口)[0].to_s.strip]=接口}
+    end
+    接口urpf表
+  end
+
   def 接口mpls信息 正文
     tag = 正文["MPLS"] ? "MPLS" : "ldp"
     接口mpls表 = {}
@@ -184,6 +214,50 @@ module ZXCTN9000_8EA
       fragments.each{|frag|接口lacp表[/interface (.)*/.match(frag)[0].to_s.strip] = head+frag+tail}
     end
     接口lacp表
+  end
+
+  def 接口am信息 正文
+    tag = 正文["AM"] ? "AM" : "am"
+    接口am表 = {}
+    if tag == "AM"
+      context,fragments = TextAbstract.draw_fragments (正文[tag]||""), /^  interface (.)*/, /^    \$/
+      head,tail = "<#{tag}>\n#{context[0..-3]}\n","!\n</#{tag}>" # context tail(!\n)
+      fragments.each{|frag|接口am表[/interface (.)*/.match(frag)[0].to_s.strip] = head+frag+tail}
+    elsif tag == "am"
+      context,fragments = TextAbstract.draw_fragments (正文[tag]||""), /^  interface (.)*/, /^  \$/
+      head,tail = "<#{tag}>\n#{context[0..-3]}\n","!\n</#{tag}>" # context tail(!\n)
+      fragments.each{|frag|接口am表[/interface (.)*/.match(frag)[0].to_s.strip] = head+frag+tail}
+    end
+    接口am表
+  end
+
+  def 接口uim信息 正文
+    tag = 正文["UIM"] ? "UIM" : "uim"
+    接口uim表 = {}
+    if tag =="UIM"
+      za,vcc = TextAbstract.draw_fragments (正文[tag]||""), /^vcc\-configuration/, /^\!/
+      za,vbui= TextAbstract.draw_fragments (正文[tag]||""), /^vbui\-configuration/, /^\!/
+      # vcc
+      context,fragments = TextAbstract.draw_fragments vcc.join, /^  interface (.)*/, /^  \$/
+      head,tail = "<#{tag}>\n#{context[0..-3]}","!\n</#{tag}>" # context tail(\n!\n)
+      fragments.each{|frag|接口uim表[/interface (.)*/.match(frag)[0].to_s.strip] = head+frag+tail}
+      # vbui
+      context,fragments = TextAbstract.draw_fragments vbui.join, /^  interface (.)*/, /^  \$/
+      head,tail = "<#{tag}>\n#{context[0..-3]}","!\n</#{tag}>" # context tail(\n!\n)
+      fragments.each{|frag|接口uim表[/interface (.)*/.match(frag)[0].to_s.strip] = head+frag+tail}
+    elsif tag =="uim"
+      za,vcc = TextAbstract.draw_fragments (正文[tag]||""), /^vcc\-configuration/, /^\$/
+      za,vbui= TextAbstract.draw_fragments (正文[tag]||""), /^vbui\-configuration/, /^\$/
+      # vcc
+      context,fragments = TextAbstract.draw_fragments vcc.join, /^  interface (.)*/, /^  \$/
+      head,tail = "<#{tag}>\n#{context[0..-3]}","!\n</#{tag}>" # context tail(\n!\n)
+      fragments.each{|frag|接口uim表[/interface (.)*/.match(frag)[0].to_s.strip] = head+frag+tail}
+      # vbui
+      context,fragments = TextAbstract.draw_fragments vbui.join, /^  interface (.)*/, /^  \$/
+      head,tail = "<#{tag}>\n#{context[0..-3]}","!\n</#{tag}>" # context tail(\n!\n)
+      fragments.each{|frag|接口uim表[/interface (.)*/.match(frag)[0].to_s.strip] = head+frag+tail}
+    end
+    接口uim表
   end
 
   def 接口isis信息 正文
@@ -488,7 +562,7 @@ module ZXCTN9000_8EA
       特殊接口集合 << [key]+configs if key.include?('loopback') || key.include?('null') || \
         key.include?('extimer') || key.include?('vbui') || key.include?('spi') || \
         key.include?('gcvi') || key.include?('guvi') || key.include?('mgmt_eth') || \
-        key.include?('qx_eth') || key.include?('qx') || key.include?('gre_tunnel')
+        key.include?('qx_eth') || key.include?('qx') || key.include?('gre_tunnel') || key.include?('vxlan_tunnel')
     end
     特殊接口集合
   end
@@ -526,12 +600,12 @@ module ZXCTN9000_8EA
   # func: 根据一个端口的描述信息，给出其格式化的类型、连接符、端口编号
   def 端口识别 描述
     描述 = 描述[0] if 描述.instance_of?(Array) # M6000取接口配置中名称部分 [name,<tag>...</tag>,...]
-    type = /xgei|gei|ulei|smartgroup|loopback|extimer|vbui|null|guvi|gcvi|mgmt_eth|vei|spi|flexe_client|flexe_group|ptp|gps|qx_eth|qx|bvi|pw|subvlan/.match(描述)
+    type = /xgei|gei|ulei|smartgroup|loopback|eth_dslgroup|extimer|vbui|vlan|virtual_template|vei|null|guvi|gcvi|gre_tunnel|mgmt_eth|ulei|irb|spi|vxlan_tunnel|flexe_client|flexe_group|ptp|gps|qx_eth|qx|bvi|pw|subvlan/.match(描述)
     类型 = type ? type.to_s : '未知类型'
     port = /(\d+|\/|\.)*(\d+)/.match(描述.split(类型).join)
     端口 = port ? port.to_s : '未知端口'
     端口 = '' if 类型=='mgmt_eth'
-    连接符 = if ['smartgroup','loopback','vbui','null','mgmt_eth','vei','flexe_client','flexe_group','qx','bvi','pw','subvlan'].include?(类型)
+    连接符 = if ['smartgroup','loopback','vlan','vbui','null','mgmt_eth','irb','vei','eth_dslgroup','vxlan_tunnel','flexe_client','flexe_group','qx','bvi','pw','subvlan','gre_tunnel','virtual_template'].include?(类型)
       '' 
     elsif ['xgei','gei','ulei','extimer','guvi','gcvi','spi','ptp','gps','qx_eth'].include?(类型)
       '-'
@@ -609,7 +683,6 @@ module ZXCTN9000_8EA
     实例
   end
 
-
   #####################################################################################################
   # 聚合接口判定相关
   #####################################################################################################
@@ -673,7 +746,7 @@ module ZXCTN9000_8EA
         invlan = eval(pattern[1].to_s.gsub('-','..'))
         if exvlan.instance_of?(Range)
           exvlan.each{|exv|vlan['qinq'] << [exv,invlan]}
-        elsif exvlan.instance_of?(Fixnum)
+        elsif exvlan.instance_of?(Integer) # Fixnum
           vlan['qinq'] << [exvlan,invlan]
         end;next
       end

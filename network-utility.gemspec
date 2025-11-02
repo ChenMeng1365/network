@@ -3,7 +3,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "network-utility"
-  spec.version       = '1.1.27'
+  spec.version       = '1.1.28'
   spec.authors       = ["Matt"]
   spec.email         = ["matthrewchains@gmail.com","18995691365@189.cn"]
   spec.license       = "AGPL-3.0"
