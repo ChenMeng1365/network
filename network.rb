@@ -22,5 +22,5 @@
 ].each{|mod|require mod}
 
 module Network
-  VERSION = '1.1.28'
+  VERSION = '1.1.41'
 end

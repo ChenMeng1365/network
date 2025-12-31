@@ -225,9 +225,9 @@ module NE40E
   def 配置解析 raw,*guards
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*\n/)[0]
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -254,9 +254,9 @@ module NE80E
   def 配置解析 raw,*guards
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*\n/)[0]
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -294,11 +294,11 @@ module ME60_16
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*/)[0]
-    content = prepart.split("\nreturn")[0] unless content
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
+    # content = prepart.split("\nreturn")[0] unless content
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -335,11 +335,11 @@ module ME60_X16
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*/)[0]
-    content = prepart.split("\nreturn")[0] unless content
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
+    # content = prepart.split("\nreturn")[0] unless content
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -376,9 +376,9 @@ module NE40E_X8
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*\n/)[0]
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -415,11 +415,11 @@ module NE40E_X16
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*/)[0]
-    content = prepart.split("\nreturn")[0] unless content
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
+    # content = prepart.split("\nreturn")[0] unless content
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -496,9 +496,9 @@ module NE5000E_X16
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*\n/)[0]
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -536,9 +536,9 @@ module NE5000E_X16A
     end
     cfg = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-    prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/<#{hostname}>( )*\n/)[0]
+    # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+    # return cfg unless prepart
+    content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
     pretent = "\n"+content
     while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
     pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -820,9 +820,9 @@ module M6000_8
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
-    prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/#{hostname}#( )*\n/)[0]
+    # prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
+    # return cfg unless prepart
+    content = self.preprocess(raw)#prepart.split(/#{hostname}#( )*\n/)[0]
     begin
       XmlParser.parse("<root>#{content}</root>").elements.each do|element|
         cfg[element.name] = element.attributes[:text]
@@ -879,10 +879,9 @@ module M6000_8E
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
-    prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/#{hostname}#( )*\n/)[0]
-
+    # prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
+    # return cfg unless prepart
+    content = self.preprocess(raw)#prepart.split(/#{hostname}#( )*\n/)[0]
     begin
       XmlParser.parse("<root>#{content}</root>").elements.each do|element|
         cfg[element.name] = element.attributes[:text]
@@ -939,9 +938,10 @@ module M6000_16E
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
-    prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/#{hostname}#( )*\n/)[0]
+    # prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
+    # prepart = self.preprocess(raw).split("show running-config\n")[1].split("<<<<")[0] unless prepart # ssh >>>> 
+    # return cfg unless prepart
+    content = self.preprocess(raw)#prepart.split(/#{hostname}#( )*\n/)[0]
     begin
       XmlParser.parse("<root>#{content}</root>").elements.each do|element|
         cfg[element.name] = element.attributes[:text]
@@ -998,11 +998,10 @@ module M6000_18S
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
-    prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
-    prepart = self.preprocess(raw).split("show running-config\n")[1].split("<<<<")[0] unless prepart # ssh >>>> 
-    return cfg unless prepart
-    content = prepart.split(/#{hostname}#( )*\n/)[0]
-
+    # prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
+    # prepart = self.preprocess(raw).split("show running-config\n")[1].split("<<<<")[0] unless prepart # ssh >>>> 
+    # return cfg unless prepart
+    content = self.preprocess(raw)#prepart.split(/#{hostname}#( )*\n/)[0]
     begin
       XmlParser.parse("<root>#{content}</root>").elements.each do|element|
         cfg[element.name] = element.attributes[:text]
@@ -1059,10 +1058,10 @@ module T8000_18
     end
     raw = newraw.join("\n")
     hostname = guards[0] || self.preprocess(raw).split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
-    prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
-    return cfg unless prepart
-    content = prepart.split(/#{hostname}#( )*\n/)[0]
-
+    # prepart = self.preprocess(raw).split(/#{hostname}#( )*show running-config( )*\n/)[1]
+    # prepart = self.preprocess(raw).split("show running-config\n")[1].split("<<<<")[0] unless prepart # ssh >>>> 
+    # return cfg unless prepart
+    content = self.preprocess(raw)#prepart.split(/#{hostname}#( )*\n/)[0]
     begin
       XmlParser.parse("<root>#{content}</root>").elements.each do|element|
         cfg[element.name] = element.attributes[:text]
@@ -1276,11 +1275,11 @@ module CR16010H_F
         end
         cfg = {}
         hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-        prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-        prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
-        return cfg unless prepart
-        content = prepart.split(/<#{hostname}>( )*/)[0]
-        content = prepart.split("\nreturn")[0] unless content
+        # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+        # prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
+        # return cfg unless prepart
+        content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
+        # content = prepart.split("\nreturn")[0] unless content
         pretent = "\n"+content
         while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
         pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}
@@ -1313,11 +1312,11 @@ module CR16018_F
         end
         cfg = {}
         hostname = guards[0] || raw.split("\n").find{|line|line.include?("sysname ")}.to_s.split("sysname ")[1]
-        prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
-        prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
-        return cfg unless prepart
-        content = prepart.split(/<#{hostname}>( )*/)[0]
-        content = prepart.split("\nreturn")[0] unless content
+        # prepart = raw.split(/#{hostname}>( )*display current-configuration( )*\n/)[1]
+        # prepart = raw.split("#{hostname}>display current-configuration\n")[1] unless prepart
+        # return cfg unless prepart
+        content = raw#prepart.split(/<#{hostname}>( )*\n/)[0]
+        # content = prepart.split("\nreturn")[0] unless content
         pretent = "\n"+content
         while pretent.include?("\n#\n#"); pretent = pretent.gsub("\n#\n#","\n#") end
         pieces = pretent.split("\n#\n").select{|pc|pc.strip != ''}

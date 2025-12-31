@@ -20,10 +20,10 @@ module M6000_8
         end
         if items[2].include?('vrf')
           head = "static:#{items[3]}"
-          tail = items[4].include?(':') ? items[4].split('/')+items[5..-1] : items[4..-1]
+          tail = items[4].include?(':') ? items[4].split('/')+items[5..-1].to_a : items[4..-1].to_a
         else
           head = "static"
-          tail = items[2].include?(':') ? items[2].split('/')+items[3..-1] : items[2..-1]
+          tail = items[2].include?(':') ? items[2].split('/')+items[3..-1].to_a : items[2..-1].to_a
         end
         static_routes << [head]+tail
       end
