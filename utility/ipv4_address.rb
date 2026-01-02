@@ -281,13 +281,30 @@ class IPv4Mask
 end
 
 module IP
-  def self.v4 string
+  module_function
+
+  def v4 string
     ip,msk = string.split("/")
     unless msk
       return IPv4.new(ip)
     else
       mask = msk.include?('.') ? IPv4Mask.string(msk) : IPv4Mask.number(msk.to_i)
       return IPv4.new(ip),mask
+    end
+  end
+
+  def range addr
+    if addr.include?('.')
+      gateway, netmask = IP.v4(addr)
+    elsif addr.include?(':')
+      gateway, netmask = IP.v6(addr)
+    end
+    if netmask
+      network = gateway.network_with(netmask)
+      start, finish = network.range_with(netmask)
+      return [start,  finish]
+    else
+      return [gateway, gateway]
     end
   end
 end
