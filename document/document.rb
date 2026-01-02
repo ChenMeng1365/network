@@ -77,12 +77,12 @@ module Doc
       Doc.build paths, runtime: :static, dir: :yes
       Doc.load paths
     end
-    if File.exist?(parameters[:document])
+    if parameters[:document] && File.exist?(parameters[:document])
       paths = parameters[:document]
       Doc.build paths, runtime: :static, dir: :yes
       Doc.load paths
     end
-    if parameters[:expansion]
+    if parameters[:expansion] && File.exist?(parameters[:expansion])
       paths = parameters[:expansion]
       Doc.build paths, custom: :active, runtime: :static, dir: :yes
       Doc.load paths
