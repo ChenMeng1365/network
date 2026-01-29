@@ -11,7 +11,7 @@ module CR16010H_F
     static_routes = []
     ['ip','ipv6'].each do|tag|
       (配置散列[tag] || []).each do|part|
-        if part.include?('route-static ')
+        if part.include?('route-static')
           part.split("\n").each do|line|
             next unless line.include?('route-static ')
             items = line.split(" ")
@@ -38,7 +38,7 @@ module CR16010H_F
     tab = []
     (conf['ip'] || []).each do|part|
       part.split("\n").each do|line|
-        next unless line.include? 'subscriber session static ip'
+        next unless line.include?('ip subscriber session')
         words = line.split(' ')
         tab << words
       end

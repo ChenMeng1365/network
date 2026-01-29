@@ -294,6 +294,10 @@ module IP
   end
 
   def range addr
+    if addr.include?('-')
+      sddr, eddr = addr.split('-')
+      return [range(sddr).uniq, range(eddr).uniq].flatten
+    end
     if addr.include?('.')
       gateway, netmask = IP.v4(addr)
     elsif addr.include?(':')
@@ -306,5 +310,21 @@ module IP
     else
       return [gateway, gateway]
     end
+  end
+
+  def cross range1, range2
+    start1, finish1 = range1
+    start2, finish2 = range2
+    (start1 <= start2  && start2  <= finish1) || 
+    (start1 <= finish2 && finish2 <= finish1) || 
+    (start2 <= start1  && start1  <= finish2) || 
+    (start2 <= finish1 && finish1 <= finish2)
+  end
+
+  def xross range1, range2, option=:v4 # or :v6
+    start1, finish1 = range1
+    start2, finish2 = range2
+    return [start1, finish1, start2, finish2].sort.uniq.map{|n|IP.send(option, '0.0.0.0')+n} if option==:v4
+    return [start1, finish1, start2, finish2].sort.uniq.map{|n|IP.send(option, '::')+n} if option==:v6
   end
 end

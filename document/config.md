@@ -7,26 +7,26 @@
 @sign << ['ALCATEL7750', '配置解析']
 
 module ALCATEL7750
-	module_function
+  module_function
 
-	def 配置解析 raw
-		conf = {}; name = nil; temp = []
-		raw.split("\n").each do|line|
-			if line[0..4]=='echo '
-				conf[name] = temp
-				temp = []
-				name = line.split('"')[1]
-				conf[name] = ''
-			elsif line.include?('#--------------------------------------------------')
-				next
-			else
-				temp << line
-			end 
-		end
-		conf[name] = temp
-		conf.delete(nil)
-		return conf
-	end
+  def 配置解析 raw
+    conf = {}; name = nil; temp = []
+    raw.gsub("\r",'').split("\n").each do|line|
+      if line[0..4]=='echo '
+        conf[name] = temp
+        temp = []
+        name = line.split('"')[1]
+        conf[name] = ''
+      elsif line.include?('#--------------------------------------------------')
+        next
+      else
+        temp << line
+      end
+    end
+    conf[name] = temp
+    conf.delete(nil)
+    return conf
+  end
 end
 ```
 
@@ -34,26 +34,26 @@ end
 @sign << ['Nokia7750', '配置解析']
 
 module Nokia7750
-	module_function
+  module_function
 
-	def 配置解析 raw
-		conf = {}; name = nil; temp = []
-		raw.split("\n").each do|line|
-			if line[0..4]=='echo '
-				conf[name] = temp
-				temp = []
-				name = line.split('"')[1]
-				conf[name] = ''
-			elsif line.include?('#--------------------------------------------------')
-				next
-			else
-				temp << line
-			end 
-		end
-		conf[name] = temp
-		conf.delete(nil)
-		return conf
-	end
+  def 配置解析 raw
+    conf = {}; name = nil; temp = []
+    raw.gsub("\r",'').split("\n").each do|line|
+      if line[0..4]=='echo '
+        conf[name] = temp
+        temp = []
+        name = line.split('"')[1]
+        conf[name] = ''
+      elsif line.include?('#--------------------------------------------------')
+        next
+      else
+        temp << line
+      end
+    end
+    conf[name] = temp
+    conf.delete(nil)
+    return conf
+  end
 end
 ```
 
@@ -76,15 +76,16 @@ end
 @sign << ['CRS-16', '配置解析']
 
 module CRS_16
-	module_function
+    module_function
 
-	def 配置解析 raw, *guards
-		config = {}
+    def 配置解析 raw, *guards
+        config = {}
     hostname = guards[0] || raw.split("\n").find{|line|line.include?("hostname ")}.to_s.split("hostname ")[1]
     prepart = raw.split("show running-config")[1]
     return {} unless prepart
     content = prepart.split("\nend\n")[0]
     config, pretent = {}, content
+    while pretent.include?("!\n^C\n"); pretent = pretent.gsub("!\n^C\n","^C\n!\n") end
     while pretent.include?("!\n!"); pretent = pretent.gsub("!\n!","!") end
     pieces = pretent.split("\n!\n").select{|pc|pc.strip != ''}
     pieces.each do|piece|
@@ -92,7 +93,7 @@ module CRS_16
       (config[tag] ||= []) << piece
     end
     return config
-	end
+    end
 end
 ```
 

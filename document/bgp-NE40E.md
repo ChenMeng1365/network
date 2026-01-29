@@ -9,15 +9,19 @@ module NE40E
 
   def 宣告网段解析 配置散列
     ranges = []
-    配置散列['bgp'].first.split("\n").each do|line|
-      if line.include?('network ') && line.split(' ').size > 2
-        ip1,ip2 = line.split(' ')[1..2]
-        ip, mask = line.split(' ')[1].include?(':') ? IP.v6("#{ip1}/#{ip2}") : IP.v4("#{ip1}/#{ip2}")
-        network = ip.network_with mask
-        start_ip, end_ip = ip.range_with mask
-        ranges << [ 'bgp', network.to_s, end_ip.to_s ]
+    配置散列['bgp'].each do|segment|
+      bgps = segment.match_paragraph("\n ipv4-family unicast", "\n #")
+      bgps.each do|bgp|
+        bgp.split("\n").each do|line|
+          if line.include?('network ') && line.strip.split(' ').size > 2
+            words = line.split(' ')
+            address, netmask = line.split(' ')[1].include?(':') ? IP.v6("#{words[1]}/#{words[2]}") : IP.v4("#{words[1]}/#{words[2]}")
+            network = address.network_with netmask
+            route_policy = words.index('route-policy') ? words[words.index('route-policy')+1] : ''
+            ranges << [ 'bgp', network.to_s, netmask.to_s, route_policy ]
+          end
+        end
       end
-      # puts [hostname]+line.split(' ') if line.include?('network ') && line.split(' ').size == 2
     end
     return ranges
   end

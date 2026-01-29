@@ -71,21 +71,33 @@ module Doc
       # document: [], path set of original module files
       # expansion: [], path set of extension module files
     }
-    parameters = {runtime: :static, config: 'document.txt'}.merge(option)
-    if File.exist?(parameters[:config])
-      paths = File.read(parameters[:config]).split("\n")
-      Doc.build paths, runtime: :static, dir: :yes
-      Doc.load paths
+    parameters = {runtime: :static}.merge(option)
+    if parameters[:config]
+      if File.exist?(parameters[:config])
+        paths = File.read(parameters[:config]).split("\n")
+        Doc.build paths, runtime: :static, dir: :yes
+        Doc.load paths
+      end
     end
-    if parameters[:document] && File.exist?(parameters[:document])
-      paths = parameters[:document]
-      Doc.build paths, runtime: :static, dir: :yes
-      Doc.load paths
+    if parameters[:document]
+      parameters[:document].each do|pathz|
+        path = pathz.gsub(".md",".rb")
+        unless File.exist?(path)
+          warn "Document File not exist: #{path}"
+        else
+          load path
+        end
+      end
     end
-    if parameters[:expansion] && File.exist?(parameters[:expansion])
-      paths = parameters[:expansion]
-      Doc.build paths, custom: :active, runtime: :static, dir: :yes
-      Doc.load paths
+    if parameters[:expansion]
+      parameters[:expansion].each do|path|
+        unless File.exist?(path)
+          warn "Expansion File not exist: #{path}"
+        else
+          Doc.build [path], custom: :active, runtime: :static, dir: :yes
+          Doc.load [path]
+        end
+      end
     end
   end
 
